@@ -12,6 +12,18 @@ const findUserByEmail = async (email) => {
   }
 };
 
+const findUserById = async (id) => {
+    try {
+        console.log(id, " id id")
+      const result = await pool.query("SELECT * FROM users where user_id = $1", [id]);
+      return result.rows[0];
+    } catch (error) {
+      throw new Error("Something went wrong");
+    }
+  };
+
+
+
 const createUsers = async (user) => {
   try {
     const { user_name, user_email, user_number, user_password } = user;
@@ -25,6 +37,7 @@ const createUsers = async (user) => {
   }
 };
 
+
 const getUsers = async () => {
     try {
        const result = await pool.query("SELECT * FROM users")
@@ -34,4 +47,4 @@ const getUsers = async () => {
     }
   };
 
-module.exports = { createUsers, findUserByEmail, getUsers };
+module.exports = { createUsers, findUserByEmail, getUsers, findUserById };

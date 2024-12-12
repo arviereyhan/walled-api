@@ -26,6 +26,7 @@ const createUsers = async (req, res) => {
   }
 };
 
+
 const getUsers = async (req, res) => {
     try {
         const user = await userService.getUsers(req.body)
@@ -41,11 +42,31 @@ const getUsers = async (req, res) => {
       if (error) {
         return res.status(400).json(error.details[0].message);
       }
-      const isValid = await userService.login(value);
-      res.status(201).json({ data: isValid });
+      const token = await userService.login(value);
+      res.status(201).json({ data: token });
     } catch (error) {
+        if (error.message === "404"){
+            return res.status(404).json({messege : "user does not exist"})
+        }
+        if (error.message === "401"){
+            return res.status(404).json({messege : "Email or password not matched"})
+        }
       res.status(error.statusCode || 500).json({ error: error.message, });
     }
   };
 
-module.exports = { createUsers, getUsers,login };
+  const getUserById = async (req, res) => {
+    try {
+      const { user_id } = req.user;
+      console.log(user_id, "id id id")
+      const user = await userService.getUserById(Number(user_id)); 
+      res.status(200).json({ data:  {user_id: user.user_id, user_email: user.user_email, user_name: user.user_name} });
+    } catch (error) {
+      if (error.message === "user not found") {
+        return res.status(404).json({ error: error.message });
+      }
+      res.status(error.statusCode || 500).json({ error: error.message });
+    }
+  };
+
+module.exports = { createUsers, getUsers,login, getUserById};
