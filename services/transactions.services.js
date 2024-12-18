@@ -14,5 +14,22 @@ const createTransactions = async (userData) => {
     return user;
   };
 
+  const createTransfer = async (transactionData) => {
+    let transaction = await transactionRepository.createTransfer(transactionData);
+    if (!transaction) {
+      throw new Error("user not found");
+    }
+    return transaction;
+  };
 
-  module.exports = {getTransactionById, createTransactions };
+  const createTopup = async (transactionData) => {
+    let transaction = await transactionRepository.createTopup(transactionData);
+    if (!transaction) {
+      throw new Error("user not found");
+    }
+    return transaction;
+  };
+
+
+
+  module.exports = {getTransactionById, createTransactions,createTransfer, createTopup };
