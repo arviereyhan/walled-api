@@ -27,10 +27,10 @@ const createUsers = async (req, res) => {
           user_id: user.user_id,
           user_email: user.user_email,
           user_name: user.user_name,
-          user_,
         },
       });
   } catch (error) {
+    console.log(error)
     res.status(error.statusCode || 500).json({ error: error.message });
   }
 };

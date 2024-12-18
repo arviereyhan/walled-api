@@ -8,6 +8,7 @@ const findUserByEmail = async (email) => {
     );
     return result;
   } catch (error) {
+    console.log(error)
     throw new Error("Something went wrong");
   }
 };
